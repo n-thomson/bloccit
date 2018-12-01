@@ -4,8 +4,16 @@
   "description": "\u0016A Reddit-like application for users to discuss and share content",
   "main": "src/server.js",
   "scripts": {
-    "test": "set NODE_ENV=test&& jasmine"
+    "test": "set NODE_ENV=test&& jasmine",
+    "start":"node src/server.js"
   },
   "author": "NT",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "jasmine": "^3.0.0",
+    "request": "^2.83.0"
+  }
 }
