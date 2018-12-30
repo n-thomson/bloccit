@@ -4,7 +4,6 @@ module.exports = {
   index(req, res, next){
     topicQueries.getAllTopics((err, topics) => {
       if(err){
-        console.log(err);
         res.redirect(500, "static/index");
       } else {
         res.render("topics/index", {topics});
@@ -23,7 +22,7 @@ module.exports = {
     };
     topicQueries.addTopic(newTopic, (err, topic) => {
       if(err){
-        res.redirect(500, "/topics/new");
+        res.redirect(500, "/topics/new");                 
       } else {
         res.redirect(303, `/topics/${topic.id}`);
       }
