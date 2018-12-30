@@ -3,11 +3,11 @@ const server = require ("../../src/server");
 const base = "http://localhost:3000/ads/";
 
 const sequelize = require("../../src/db/models/index").sequelize;
-const Ad = require("../../src/models").Advertisement;
+const Ad = require("../../src/db/models").Advertisement;
 
 describe("routes : ads", () => {
 
-  beforeEach(done) => {
+  beforeEach((done) => {
     this.ad;
     sequelize.sync({force: true}).then((res) => {
 
@@ -41,9 +41,9 @@ describe("routes : ads", () => {
 
   describe("GET /ads/new", () => {
     it("should render a new ad form", (done) => {
-      request.get(base, (err, res, body) => {
+      request.get(`${base}new`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("New Ads");
+        expect(body).toContain("New Ad");
         done();
       });
     });
@@ -88,8 +88,8 @@ describe("routes : ads", () => {
     it("should delete the ad with the associated id", (done) => {
       Ad.all()
       .then(ads => {
-        const adsCountBeforeDelete = ads.length;
-        expect(adsCountBeforeDelete).toBe(1);
+        const adCountBeforeDelete = ads.length;
+        expect(adCountBeforeDelete).toBe(1);
         request.post(`${base}${this.ad.id}/destroy`, (err, res, body) => {
           Ad.all()
           .then(ads => {
@@ -108,6 +108,7 @@ describe("routes : ads", () => {
         expect(err).toBeNull();
         expect(body).toContain("Edit Ad");
         expect(body).toContain("Bloccit");
+        done();
       });
     });
   });
