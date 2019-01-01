@@ -73,7 +73,7 @@ describe("Post", () => {
 
    describe("#setTopic()", () => {
      it("should associate a topic and a post together", (done) => {
-       Topic.Create({
+       Topic.create({
          title: "Challenges of interstellar travel",
          description: "1. The Wi-Fi is terrible"
        })
@@ -92,11 +92,11 @@ describe("Post", () => {
      it("should return the associated topic", (done) => {
        this.post.getTopic()
        .then((associatedTopic) => {
-         expect(associatedTopic.title)toBe("Expeditions to Alpha Centauri");
+         expect(associatedTopic.title).toBe("Expeditions to Alpha Centauri");
          done();
        });
      });
    });
 
-   
+
 });
