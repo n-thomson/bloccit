@@ -6,13 +6,13 @@ module.exports = {
       if(err){
         res.redirect(500, "static/index");
       } else {
-        res.render("topics/index", {topics});
+        res.render("topics/index", {topics, title: 'Topics'});
       }
     })
   },
 
   new(req,res,next){
-    res.render("topics/new");
+    res.render("topics/new",{title:'New Topic'});
   },
 
   create(req,res,next){
@@ -22,7 +22,7 @@ module.exports = {
     };
     topicQueries.addTopic(newTopic, (err, topic) => {
       if(err){
-        res.redirect(500, "/topics/new");                 
+        res.redirect(500, "/topics/new");
       } else {
         res.redirect(303, `/topics/${topic.id}`);
       }
@@ -34,7 +34,7 @@ module.exports = {
       if(err || topic == null){
         res.redirect(404, "/");
       } else {
-        res.render("topics/show", {topic});
+        res.render("topics/show", {topic, title: topic.title});
       }
     })
   },
@@ -54,7 +54,7 @@ module.exports = {
       if(err || topic == null){
         res.redirect(404, "/");
       } else {
-        res.render("topics/edit", {topic});
+        res.render("topics/edit", {topic, title: 'Edit Topic - '+topic.title});
       }
     });
   },
