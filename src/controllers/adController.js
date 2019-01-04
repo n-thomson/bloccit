@@ -6,13 +6,13 @@ module.exports = {
       if(err){
         res.redirect(500, "static/index");
       } else {
-        res.render("ads/index", {ads});
+        res.render("ads/index", {ads, title: 'Advertisements'});
       }
     })
   },
 
   new(req, res, next){
-    res.render("ads/new");
+    res.render("ads/new", {title: 'New Ad'});
   },
 
   create(req, res, next){
@@ -35,7 +35,7 @@ module.exports = {
       if (err || ad == null){
         res.redirect(404, "/");
       } else {
-        res.render("ads/show", {ad});
+        res.render("ads/show", {ad, title: `Ad - ` + ad.title});
       }
     })
   },
@@ -55,7 +55,7 @@ module.exports = {
       if (err || ad == null){
         res.redirect(404, "/");
       } else {
-        res.render("ads/edit", {ad});
+        res.render("ads/edit", {ad, title: `Edit - ` + ad.title});
       }
     });
   },

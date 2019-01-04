@@ -82,4 +82,66 @@ describe("routes : posts", () => {
     });
   });
 
+  describe("POST /topics/:topicId/posts/:id/destroy", () => {
+    it("should delete the post associated with the id", (done) => {
+      Post.all()
+      .then((posts) => {
+        const postCountBeforeDelete = posts.length;
+        expect(postCountBeforeDelete).toBe(1);
+        request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err,res,body) => {
+          Post.all()
+          .then((posts) => {
+            expect(err).toBeNull();
+            expect(posts.length).toBe(postCountBeforeDelete -1);
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  describe("GET /topics/:topicId/posts/:id/edit", () => {
+    it("should render a view with edit post form" , (done) => {
+      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err,res,body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("Edit Post");
+        expect(body).toContain("Snowball Fighting");
+        done();
+      });
+    });
+  });
+
+  describe("POST /topics/:topicId/posts/:id/update", () => {
+    it("should return a status code 302", (done) => {
+       request.post({
+         url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+         form: {
+           title: "Snowman Building Competition",
+           body: "I love watching them melt slowly."
+         }
+       }, (err, res, body) => {
+         expect(res.statusCode).toBe(302);
+         done();
+       });
+     });
+  });
+
+  it("should update the post with the given values", (done) => {
+    const options = {
+      url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+      form: {
+        title: "Snowman Building Competition"
+        }
+      };
+      request.post(options, (err, res, body) => {
+        expect(err).toBeNull();
+        Post.findOne({where: {id: this.post.id}})
+        .then((post) => {
+          expect(post.title).toBe("Snowman Building Competition");
+          done();
+        });
+      });
+    });
+
+
 });

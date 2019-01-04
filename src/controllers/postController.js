@@ -2,7 +2,6 @@ const postQueries = require("../db/queries.posts.js");
 
 module.exports = {
   new(req,res,next){
-    console.log(req.params.id);
     res.render("posts/new", {topicId:req.params.topicId, title: "New Post"});
   },
 
@@ -16,7 +15,6 @@ module.exports = {
       if(err){
         res.redirect(500, "posts/new");
       } else {
-        console.log(post.id);
         res.redirect(303, `/topics/${newPost.topicId}/posts/${post.id}`);
       }
     });
@@ -27,8 +25,38 @@ module.exports = {
       if(err || post == null){
         res.redirect(404, "/");
       } else {
-        res.render("posts/show", {post, title: post.title});
+        res.render("posts/show", {post, title: `Post - ` + post.title});
       }
+    });
+  },
+
+  destroy(req,res,next){
+    postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
+      if(err){
+        res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`);
+      } else {
+        res.redirect(303, `/topics/${req.params.topicId}`);
+      }
+    })
+  },
+
+  edit(req,res,next){
+    postQueries.getPost(req.params.id, (err, post) => {
+      if(err || post == null){
+        res.redirect(404, "/");
+      } else {
+        res.render("posts/edit", {post, title: `Edit Post - ` + post.title});
+      }
+    });
+  },
+
+  update(req,res,next){
+    postQueries.updatePost(req.params.id, req.body, (err, post) => {
+      if(err || post == null){
+         res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
+       } else {
+         res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
+       }
     });
   }
 
