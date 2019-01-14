@@ -26,7 +26,7 @@ module.exports = {
    },
 
    signInForm(req, res, next){
-     res.render("users/sign_in");
+     res.render("users/sign_in", {title: 'Sign In'});
    },
 
    signIn(req, res, next){
